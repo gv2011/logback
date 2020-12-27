@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
 
@@ -12,140 +12,52 @@
   </parent>
 
   <artifactId>logback-core</artifactId>
-  <packaging>jar</packaging>
-  <name>Logback Core Module</name>
-  <description>logback-core module</description>
 
-  <properties>
-    <module-name>ch.qos.logback.core</module-name>
-  </properties>
-  
+  <licenses>
+    <license>
+      <name>Eclipse Public License - v 1.0</name>
+      <url>http://www.eclipse.org/legal/epl-v10.html</url>
+    </license>
+
+    <license>
+      <name>GNU Lesser General Public License</name>
+      <url>http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html</url>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <id>ceki</id>
+      <name>Ceki Gulcu</name>
+      <email>ceki@qos.ch</email>
+    </developer>
+
+    <developer>
+      <id>hixi</id>
+      <name>Joern Huxhorn</name>
+      <email>huxi@undisclosed.org</email>
+    </developer>
+
+    <developer>
+      <id>vinz</id>
+      <name>Vinz</name>
+      <url>https://github.com/gv2011/</url>
+    </developer>
+  </developers>
+
   <dependencies>
-  
-    <dependency>
-       <groupId>org.codehaus.janino</groupId>
-      <artifactId>janino</artifactId>
-      <scope>compile</scope>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>org.fusesource.jansi</groupId>
-      <artifactId>jansi</artifactId>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>javax.mail</groupId>
-      <artifactId>javax.mail-api</artifactId>      
-      <scope>compile</scope>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-    	<groupId>com.sun.mail</groupId>
-   	<artifactId>javax.mail</artifactId>
-    	<scope>runtime</scope>
-        <optional>true</optional>
-	</dependency>
-    
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-core</artifactId>
-      <scope>test</scope>
-    </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>javax.servlet-api</artifactId>
-      <scope>compile</scope>
-      <optional>true</optional>
     </dependency>
     <dependency>
-      <groupId>joda-time</groupId>
-      <artifactId>joda-time</artifactId>
-      <scope>test</scope>
+      <groupId>org.codehaus.janino</groupId>
+      <artifactId>janino</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>jakarta.mail</groupId>
+      <artifactId>jakarta.mail-api</artifactId>
     </dependency>
   </dependencies>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
-          <!-- <argLine>-Xmx2048m ==permit-illegal-access</argLine>  -->
-          <parallel>none</parallel>
-          <useUnlimitedThreads>false</useUnlimitedThreads>
-          <forkCount>2C</forkCount>
-          <reuseForks>true</reuseForks>
-          <reportFormat>plain</reportFormat>
-          <trimStackTrace>false</trimStackTrace>
-          <!-- See https://issues.apache.org/jira/browse/SUREFIRE-1265 -->
-          <childDelegation>true</childDelegation>
-          <excludes>
-            <exclude>**/All*Test.java</exclude>
-            <exclude>**/PackageTest.java</exclude>
-            <!-- ConsoleAppenderTest redirects System.out which is not well tolerated by Maven -->
-            <exclude>**/ConsoleAppenderTest.java</exclude>
-          </excludes>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        
-        <configuration>
-          <archive>
-            <manifestEntries>
-              <Multi-Release>true</Multi-Release>
-              <X-Compile-Source-JDK>${maven.compiler.source}</X-Compile-Source-JDK>	
-              <X-Compile-Target-JDK>${maven.compiler.target}</X-Compile-Target-JDK>
-            </manifestEntries>
-            <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
-          </archive>
-        </configuration>
-
-        <executions>
-          <execution>
-            <id>bundle-test-jar</id>
-            <phase>package</phase>
-            <goals>
-              <goal>test-jar</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.felix</groupId>
-        <artifactId>maven-bundle-plugin</artifactId>
-        <extensions>true</extensions>
-        
-        <executions>
-          <execution>
-            <id>bundle-manifest</id>
-            <phase>process-classes</phase>
-            <goals>
-              <goal>manifest</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <instructions>
-            <_noee>true</_noee> <!-- Jigsaw -->
-            <_failok>true</_failok> <!-- Jigsaw -->
-            <Export-Package>ch.qos.logback.core.*</Export-Package>
-            <Import-Package>
-              javax.*;resolution:=optional,
-              org.xml.*;resolution:=optional,
-              org.fusesource.jansi;resolution:=optional,
-              org.codehaus.janino;resolution:=optional,
-              org.codehaus.commons.compiler;resolution:=optional,
-              *
-            </Import-Package>
-            <Bundle-RequiredExecutionEnvironment>JavaSE-1.6
-            </Bundle-RequiredExecutionEnvironment>
-          </instructions>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
 
 </project>
