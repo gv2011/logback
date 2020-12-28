@@ -15,19 +15,18 @@ package ch.qos.logback.classic.selector.servlet;
 
 import java.io.IOException;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-
 import org.slf4j.LoggerFactory;
 
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.selector.ContextJNDISelector;
 import ch.qos.logback.classic.selector.ContextSelector;
 import ch.qos.logback.classic.util.ContextSelectorStaticBinder;
+import jakarta.servlet.Filter;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.FilterConfig;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
 
 /**
  * A servlet filter that puts the environment dependent LoggerContext in a
@@ -50,10 +49,12 @@ import ch.qos.logback.classic.util.ContextSelectorStaticBinder;
  */
 public class LoggerContextFilter implements Filter {
 
+    @Override
     public void destroy() {
         // do nothing
     }
 
+    @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 
         LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
@@ -74,6 +75,7 @@ public class LoggerContextFilter implements Filter {
         }
     }
 
+    @Override
     public void init(FilterConfig arg0) throws ServletException {
         // do nothing
     }

@@ -20,14 +20,14 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import ch.qos.logback.core.CoreConstants;
 import ch.qos.logback.core.helpers.Transform;
 import ch.qos.logback.core.util.CachingDateFormatter;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 abstract public class ViewStatusMessagesServletBase extends HttpServlet {
 
@@ -43,6 +43,7 @@ abstract public class ViewStatusMessagesServletBase extends HttpServlet {
 
     int count;
 
+    @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         count = 0;
@@ -129,13 +130,14 @@ abstract public class ViewStatusMessagesServletBase extends HttpServlet {
     String statusLevelAsString(Status s) {
         switch (s.getEffectiveLevel()) {
         case Status.INFO:
-            return "INFO";
+          return "INFO";
         case Status.WARN:
-            return "<span class=\"warn\">WARN</span>";
+          return "<span class=\"warn\">WARN</span>";
         case Status.ERROR:
-            return "<span class=\"error\">ERROR</span>";
+          return "<span class=\"error\">ERROR</span>";
+        default:
+          return null;
         }
-        return null;
     }
 
     String abbreviatedOrigin(Status s) {

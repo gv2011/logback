@@ -17,8 +17,6 @@ import static ch.qos.logback.classic.ClassicConstants.JNDI_CONTEXT_NAME;
 
 import javax.naming.Context;
 import javax.naming.NamingException;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
 
 import org.slf4j.Logger;
 
@@ -26,13 +24,17 @@ import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.selector.ContextSelector;
 import ch.qos.logback.classic.util.ContextSelectorStaticBinder;
 import ch.qos.logback.classic.util.JNDIUtil;
+import jakarta.servlet.ServletContextEvent;
+import jakarta.servlet.ServletContextListener;
 
 public class ContextDetachingSCL implements ServletContextListener {
 
+    @Override
     public void contextInitialized(ServletContextEvent arg0) {
         // do nothing
     }
     
+    @Override
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
         String loggerContextName = null;
 

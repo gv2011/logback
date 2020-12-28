@@ -13,13 +13,13 @@
  */
 package ch.qos.logback.classic;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.LoggerFactory;
 
 import ch.qos.logback.core.status.StatusManager;
 import ch.qos.logback.core.status.ViewStatusMessagesServletBase;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 public class ViewStatusMessagesServlet extends ViewStatusMessagesServletBase {
 

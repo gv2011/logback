@@ -6,7 +6,7 @@
   <parent>
     <groupId>com.github.gv2011</groupId>
     <artifactId>parent-gv</artifactId>
-    <version>0.5.8</version>
+    <version>1.0-SNAPSHOT</version>
   </parent>
 
   <groupId>com.github.gv2011.logback</groupId>

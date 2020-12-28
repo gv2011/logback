@@ -1,7 +1,5 @@
 package ch.qos.logback.classic.servlet;
 
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
 
 import org.slf4j.ILoggerFactory;
 import org.slf4j.LoggerFactory;
@@ -9,6 +7,8 @@ import org.slf4j.LoggerFactory;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.util.StatusViaSLF4JLoggerFactory;
 import ch.qos.logback.core.spi.ContextAwareBase;
+import jakarta.servlet.ServletContextEvent;
+import jakarta.servlet.ServletContextListener;
 
 /**
  * Allows for graceful shutdown of the {@link LoggerContext} associated with this web-app.

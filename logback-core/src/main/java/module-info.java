@@ -5,7 +5,7 @@ module ch.qos.logback.core {
     requires static janino;
     requires static commons.compiler;
     requires jakarta.mail;
-    requires javax.servlet.api;
+    requires jetty.servlet.api;
     
     
     exports ch.qos.logback.core;
