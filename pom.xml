@@ -37,7 +37,7 @@
 
   <properties>
     <java.release>11</java.release>
-    <util-apis.version>0.8-SNAPSHOT</util-apis.version>
+    <util-apis.version>0.8</util-apis.version>
   </properties>
 
   <dependencyManagement>
