@@ -24,7 +24,7 @@ import ch.qos.logback.core.spi.ContextAwareBase;
  *
  * @author Carl Harris
  */
-public class MockContextAware extends ContextAwareBase implements ContextAware {
+public class MockContextAware extends ContextAwareBase {
 
     private final List<String> info = new LinkedList<String>();
     private final List<String> warn = new LinkedList<String>();

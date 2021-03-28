@@ -13,11 +13,8 @@
  */
 package ch.qos.logback.classic.control;
 
-import junit.framework.TestCase;
-
 import ch.qos.logback.classic.Level;
-import ch.qos.logback.classic.control.ControlLogger;
-import ch.qos.logback.classic.control.ControlLoggerContext;
+import junit.framework.TestCase;
 
 /**
  * This class is for testing ControlLoggerContext which is a control class for testing HLoggerContext.

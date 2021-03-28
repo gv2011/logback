@@ -13,11 +13,9 @@
  */
 package ch.qos.logback.classic.pattern;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-
-import ch.qos.logback.classic.pattern.TargetLengthBasedClassNameAbbreviator;
 
 public class TargetLengthBasedClassNameAbbreviatorTest {
 
