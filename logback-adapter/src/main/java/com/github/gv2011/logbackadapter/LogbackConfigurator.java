@@ -10,8 +10,9 @@ import ch.qos.logback.core.spi.ContextAwareBase;
 public final class LogbackConfigurator extends ContextAwareBase implements Configurator{
 
   @Override
-  public void configure(final LoggerContext loggerContext) {
+  public ExecutionStatus configure(final LoggerContext loggerContext) {
     ((LogbackLogAdapter) RecursiveServiceLoader.service(LogAdapter.class)).configure(loggerContext);
+    return ExecutionStatus.DO_NOT_INVOKE_NEXT_IF_ANY;
   }
 
 }

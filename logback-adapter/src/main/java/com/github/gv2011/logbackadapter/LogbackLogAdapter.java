@@ -12,6 +12,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,23 +76,31 @@ public class LogbackLogAdapter implements LogAdapter{
       verify(!closing);
       try{
         this.loggerContext = notNull(loggerContext);
-        if(!Files.exists(CONFIG_FILE)){
-          final URL srcUrl = notNull(getClass().getResource("logback-default.xml"));
-          call(()->{
-            try(InputStream in = srcUrl.openStream()){
-              Files.copy(in, CONFIG_FILE);
+        final Bytes configuration;
+        final URL url = Optional
+          .ofNullable(getClass().getResource("/logback.xml"))
+          .or(()->Optional.ofNullable(getClass().getResource("/logback-test.xml")))
+          .orElseGet(()->{
+            if(!Files.exists(CONFIG_FILE)){
+              final URL srcUrl = notNull(getClass().getResource("logback-default.xml"));
+              call(()->{
+                try(InputStream in = srcUrl.openStream()){
+                  Files.copy(in, CONFIG_FILE);
+                }
+              });
+              loggerContext.getStatusManager().add(new WarnStatus(
+                format("Logback configuration file {} did not exist, copied default from {}.", CONFIG_FILE, srcUrl),
+                LogbackLogAdapter.class.getName()
+              ));
             }
-          });
-          loggerContext.getStatusManager().add(new WarnStatus(
-            format("Logback configuration file {} did not exist, copied default from {}.", CONFIG_FILE, srcUrl),
-            LogbackLogAdapter.class.getName()
-          ));
-        }
+            return call(()->CONFIG_FILE.toUri().toURL());
+          })
+        ;
         loggerContext.getStatusManager().add(new InfoStatus(
-          format("Configuring logback from file {}.", CONFIG_FILE),
+          format("Configuring logback from url {}.", url),
           LogbackLogAdapter.class.getName()
         ));
-        final Bytes configuration = ByteUtils.read(CONFIG_FILE);
+        configuration = ByteUtils.read(url);
         doConfigure(configuration);
         SLF4JBridgeHandler.removeHandlersForRootLogger();
         SLF4JBridgeHandler.install();
