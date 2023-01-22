@@ -5,6 +5,7 @@ import static com.github.gv2011.util.Verify.verify;
 import static com.github.gv2011.util.ex.Exceptions.call;
 import static com.github.gv2011.util.ex.Exceptions.callWithCloseable;
 import static com.github.gv2011.util.ex.Exceptions.format;
+import static com.github.gv2011.util.icol.ICollections.ofOptional;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.InputStream;
@@ -13,6 +14,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Optional;
+import java.util.Spliterators;
+import java.util.stream.StreamSupport;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,11 +26,13 @@ import com.github.gv2011.util.bytes.ByteUtils;
 import com.github.gv2011.util.bytes.Bytes;
 import com.github.gv2011.util.bytes.Hash256;
 import com.github.gv2011.util.filewatch.FileWatchService;
+import com.github.gv2011.util.icol.Opt;
 import com.github.gv2011.util.log.LogAdapter;
 import com.github.gv2011.util.serviceloader.RecursiveServiceLoader;
 
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.joran.JoranConfigurator;
+import ch.qos.logback.core.FileAppender;
 import ch.qos.logback.core.status.ErrorStatus;
 import ch.qos.logback.core.status.InfoStatus;
 import ch.qos.logback.core.status.WarnStatus;
@@ -138,6 +143,22 @@ public class LogbackLogAdapter implements LogAdapter{
       }
       return !closing;
     }
+  }
+
+  @Override
+  public Opt<Path> tryGetLogFileDirectory() {
+    ensureInitialized();
+    return ofOptional(
+      loggerContext.getLoggerList()
+      .stream()
+      .flatMap(l->StreamSupport.stream(Spliterators.spliteratorUnknownSize(l.iteratorForAppenders(), 0),false))
+      .filter(a->a.getName().equals("info") && FileAppender.class.isInstance(a))
+      .findFirst()
+      .map(FileAppender.class::cast)
+      .map(FileAppender::getFile)
+      .map(f->Paths.get(f).toAbsolutePath().getParent())
+      .filter(p->Files.isDirectory(p))
+    );
   }
 
 }
