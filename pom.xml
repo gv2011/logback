@@ -6,12 +6,11 @@
   <parent>
     <groupId>com.github.gv2011</groupId>
     <artifactId>parent-gv</artifactId>
-    <version>1.3</version>
+    <version>1.5</version>
   </parent>
 
-  <groupId>com.github.gv2011.logback</groupId>
   <artifactId>logback-parent</artifactId>
-  <version>1.3.5</version>
+  <version>1.3.6</version>
   <packaging>pom</packaging>
 
   <name>Logback-Parent</name>
@@ -23,19 +22,15 @@
     <url>https://github.com/gv2011/logback</url>
     <connection>scm:git:git@github.com:gv2011/logback.git</connection>
     <developerConnection>scm:git:git@github.com:gv2011/logback.git</developerConnection>
-    <tag>logback-parent-1.3.5</tag>
+    <tag>logback-parent-1.3.6</tag>
   </scm>
 
   <modules>
     <module>logback-adapter</module>
-    <module>logback-core</module>
-    <module>logback-classic</module>
-    <module>logback-test</module>
   </modules>
 
   <properties>
-    <java.release>11</java.release>
-    <util-apis.version>0.10</util-apis.version>
+    <util-apis.version>0.11</util-apis.version>
   </properties>
 
   <dependencyManagement>

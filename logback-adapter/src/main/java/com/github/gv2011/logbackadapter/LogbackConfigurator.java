@@ -1,5 +1,7 @@
 package com.github.gv2011.logbackadapter;
 
+import static com.github.gv2011.util.Verify.noop;
+
 import com.github.gv2011.util.log.LogAdapter;
 import com.github.gv2011.util.serviceloader.RecursiveServiceLoader;
 
@@ -9,9 +11,14 @@ import ch.qos.logback.core.spi.ContextAwareBase;
 
 public final class LogbackConfigurator extends ContextAwareBase implements Configurator{
 
+  public LogbackConfigurator(){
+    noop();
+  }
+
   @Override
-  public void configure(final LoggerContext loggerContext) {
+  public ExecutionStatus configure(final LoggerContext loggerContext) {
     ((LogbackLogAdapter) RecursiveServiceLoader.service(LogAdapter.class)).configure(loggerContext);
+    return ExecutionStatus.DO_NOT_INVOKE_NEXT_IF_ANY;
   }
 
 }
