@@ -1,14 +1,17 @@
 package com.github.gv2011.logbackadapter;
 
+import static com.github.gv2011.util.Verify.noop;
 import static com.github.gv2011.util.Verify.notNull;
 import static com.github.gv2011.util.Verify.verify;
 import static com.github.gv2011.util.ex.Exceptions.call;
 import static com.github.gv2011.util.ex.Exceptions.callWithCloseable;
 import static com.github.gv2011.util.ex.Exceptions.format;
+import static com.github.gv2011.util.icol.ICollections.ofNullable;
 import static com.github.gv2011.util.icol.ICollections.ofOptional;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.InputStream;
+import java.net.URI;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -50,6 +53,12 @@ public class LogbackLogAdapter implements LogAdapter{
   private @Nullable LoggerContext loggerContext = null;
 
   private @Nullable FileWatchService fileWatchService = null;
+
+  private @Nullable URI configUrl;
+
+  public LogbackLogAdapter(){
+    noop();
+  }
 
   @Override
   public void ensureInitialized() {
@@ -101,6 +110,7 @@ public class LogbackLogAdapter implements LogAdapter{
             return call(()->CONFIG_FILE.toUri().toURL());
           })
         ;
+        configUrl = url.toURI();
         loggerContext.getStatusManager().add(new InfoStatus(
           format("Configuring logback from url {}.", url),
           LogbackLogAdapter.class.getName()
@@ -159,6 +169,15 @@ public class LogbackLogAdapter implements LogAdapter{
       .map(f->Paths.get(f).toAbsolutePath().getParent())
       .filter(p->Files.isDirectory(p))
     );
+  }
+
+  @Override
+  public Opt<URI> tryGetLogConfiguration() {
+    ensureInitialized();
+    synchronized(lock){
+      verify(!closing);
+      return ofNullable(configUrl);
+    }
   }
 
 }
