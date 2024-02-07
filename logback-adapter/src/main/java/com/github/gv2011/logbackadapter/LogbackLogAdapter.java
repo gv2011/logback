@@ -20,6 +20,7 @@ import java.util.Optional;
 import java.util.Spliterators;
 import java.util.stream.StreamSupport;
 
+import org.slf4j.ILoggerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
@@ -167,7 +168,6 @@ public class LogbackLogAdapter implements LogAdapter{
       .map(FileAppender.class::cast)
       .map(FileAppender::getFile)
       .map(f->Paths.get(f).toAbsolutePath().getParent())
-      .filter(p->Files.isDirectory(p))
     );
   }
 
@@ -178,6 +178,12 @@ public class LogbackLogAdapter implements LogAdapter{
       verify(!closing);
       return ofNullable(configUrl);
     }
+  }
+
+  @Override
+  public ILoggerFactory loggerFactory() {
+    ensureInitialized();
+    return loggerContext;
   }
 
 }

@@ -30,7 +30,7 @@
   </modules>
 
   <properties>
-    <util-apis.version>0.11</util-apis.version>
+    <util-apis.version>0.12-SNAPSHOT</util-apis.version>
   </properties>
 
   <dependencyManagement>
