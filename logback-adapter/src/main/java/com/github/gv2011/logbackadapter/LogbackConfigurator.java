@@ -17,7 +17,12 @@ public final class LogbackConfigurator extends ContextAwareBase implements Confi
 
   @Override
   public ExecutionStatus configure(final LoggerContext loggerContext) {
-    ((LogbackLogAdapter) RecursiveServiceLoader.service(LogAdapter.class)).configure(loggerContext);
+    try {
+      ((LogbackLogAdapter) RecursiveServiceLoader.service(LogAdapter.class)).configure(loggerContext);
+    } catch (final Throwable t) {
+      t.printStackTrace(System.err);
+      throw t;
+    }
     return ExecutionStatus.DO_NOT_INVOKE_NEXT_IF_ANY;
   }
 
