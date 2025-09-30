@@ -8,6 +8,10 @@
   </parent>
 
   <artifactId>logback-adapter</artifactId>
+  <name>Logback Adapter</name>
+  <description>Logback implementation of com.github.gv2011.logbackadapter.LogbackLogAdapter</description>
+
+  <url>https://github.com/gv2011/logback</url>
 
   <developers>
     <developer>
